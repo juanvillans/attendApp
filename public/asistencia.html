@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="fontawesome-free/css/all.min.css" />
+    <!-- Theme style -->
+    <!-- <link rel="stylesheet" href="../../dist/css/adminlte.min.css"> -->
+
+    <link rel="stylesheet" href="stylesheets/asistencia.css" />
+    <title>Asistencia</title>
+  </head>
+
+  <body>
+    <div class="container">
+      <!-- Content Wrapper. Contains page content -->
+      
+        <!-- Content Header (Page header) -->
+        <!-- <header class="content-header">
+         
+        </header> -->
+
+       
+        <!-- Main content -->
+        <main>
+          <div class="content table_container">
+          
+                  <div class=" intro_table">
+
+                    <div class="select_area_parent">
+                      <label>Materia / Area: </label>
+                      <select>
+                        <option selected="selected">Lenguaje II</option>
+                        <option>Base de datos</option>
+                        <option>Diseño de sistemasa</option>
+                      </select>
+                    </div>
+
+                    
+                      
+                      <span class="d-flex ">
+                        <label for="input_n_classes"
+                          > <b>Número de clases</b></label
+                        >
+                        <input
+                          type="number"
+                          value="13"
+                          class="p-1 ml-2 form-control"
+                          id="input_n_classes"
+                        />
+                      </span>
+                    
+                      <div>
+                        <i
+                          title="revertir cambio"
+                          class="disabled fa-solid history_arrows past fa-arrow-rotate-left"
+                        ></i><i
+                          title="volver al cambio"
+                          class="fa-solid history_arrows future fa-arrow-rotate-right disabled "
+                        ></i>
+                      </div>
+                      <!-- <span class="parent_btn_submit">
+                        <input
+                          type="submit"
+                          title="Ctrl + s"
+                          name=""
+                          value="GUARDAR"
+                          class="btn_submit mt-0"
+                        />
+                      </span> -->
+                    
+                  </div>
+                  <!-- /. -->
+                  
+                    <table
+                      class="asist_table "
+                    >
+                      <thead>
+                        <tr class="tr_class_numbers">
+                          <th class="th_students">Estudiantes (17) 
+                            <span class="parent_btn_submit">
+
+                              <button  id="create_student_btn" class=" btn_submit" title="Añadir nuevo estudiante"><i class="fa-solid fa-plus"></i></button>
+                            </span>                          
+                          </th>
+                          <template id="template_th">
+                            <th>
+                              <label for="c1" title="marcar toda la columna 1 ">
+                                <span class="text"></span>
+                                <input
+                                  type="checkbox"
+                                  class="marcar_col_input"
+                                  name=""
+                                  id="c1"
+                                />
+                              </label>
+                            </th>
+                          </template>
+                          
+                          
+
+                          <th class="th_total">Total</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <template id="template_tr">
+                          <tr>
+                            <td>
+                                <input
+                                  type="text"
+                                  class="student_name"
+                                  name=""
+                                  id="3"
+                                  value="Dolores Pecho Barba">
+                    
+                                  <button class="delete_student_btn" title="Eliminar Estudiante">x</button>
+                             
+                            </td>
+                            
+                            <td class="each_total">0%</td>
+                          </tr>
+                        </template>
+                        <template id="template_td">
+                          <td class="each_cell"></td>
+                       </template>
+                      </tbody>
+                    </table>
+                  
+                  <!-- /.card-body -->
+                
+            
+          </div>
+          <!-- /.row -->
+        </main>
+      
+    
+
+    </div>
+
+   
+
+    
+    <script src="javascripts/asistencia.js"></script>
+    
+  </body>
+</html>
