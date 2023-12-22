@@ -15,8 +15,9 @@ router.get("/asistencias/:id", async (req, res) => {
     try {
         
 
-      const user = await Users.findById("657f4771f724c33c44a14fea");
+      const user = await Users.findById("6585c9758e3d68f619be8207");
       res.json(user);
+      console.log(user)
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: "Error en el servidor" });

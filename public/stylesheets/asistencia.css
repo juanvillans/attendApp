@@ -398,24 +398,42 @@ label:hover {
   position: sticky;
   z-index: 200 !important;
   background: white;
-  top: 80px;
+  top: 97.4px;
   /* box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.075); */
 
 }
-
+.th_each_colunm { 
+  position: relative;
+}
+.th_each_colunm label {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top:0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  /* background: red; */
+  height: 100%;
+}
 .asist_table td,
 .asist_table th {
   overflow: hidden;
   height: 50px;
   outline: 1px solid rgb(230, 230, 230);
 }
-input.student_name {
+.td_student_name:focus-within {
+  background: #1f4287 !important;
+}
+input.student_name_input {
   font-size: 15px;
   background: transparent;
   width: 100%;
   height: 100%;
   padding: 5px 4px;
 }
+
 
 .asist_table th:not(.th_students, .th_total), .asist_table .each_cell {
   min-width: 55px !important;
@@ -491,8 +509,9 @@ tr td:first-child:not(.th_students) {
   align-items: center;
 }
 #create_student_btn {
-  padding: 6px 20px;
+  padding: 3px 20px;
   width: max-content;
+  font-size: 20px;
 }
 
 .th_total {
@@ -503,6 +522,7 @@ tbody tr td:last-child {
   text-align: center;
 }
 .min75 {
-  color: #081f3d;
+  color: #21e6c1;
   font-weight: bold;
+  background: #081f3d !important;
 }/*# sourceMappingURL=asistencia.css.map */

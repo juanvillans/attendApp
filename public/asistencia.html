@@ -5,10 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link rel="stylesheet" href="fontawesome-free/css/all.min.css" />
     <!-- Theme style -->
-    <!-- <link rel="stylesheet" href="../../dist/css/adminlte.min.css"> -->
-
     <link rel="stylesheet" href="stylesheets/asistencia.css" />
     <title>Asistencia</title>
   </head>
@@ -16,52 +13,72 @@
   <body>
     <div class="container">
       <!-- Content Wrapper. Contains page content -->
-      
-        <!-- Content Header (Page header) -->
-        <!-- <header class="content-header">
+
+      <!-- Content Header (Page header) -->
+      <!-- <header class="content-header">
          
         </header> -->
 
-       
-        <!-- Main content -->
-        <main>
-          <div class="content table_container">
-          
-                  <div class=" intro_table">
+      <!-- Main content -->
+      <main>
+        <div class="content table_container">
+          <div class="intro_table">
+            <div class="select_area_parent">
+              <label>Materia / Area: </label>
+              <select id="select_area">
+                <option value="657f4771f724c33c44a14ff6" selected="selected">
+                  Matemática
+                </option>
+                <option value="657f4771f724c33c44a14feb">Lenguaje II</option>
+                <option>Diseño de sistemasa</option>
+              </select>
+            </div>
 
-                    <div class="select_area_parent">
-                      <label>Materia / Area: </label>
-                      <select>
-                        <option selected="selected">Lenguaje II</option>
-                        <option>Base de datos</option>
-                        <option>Diseño de sistemasa</option>
-                      </select>
-                    </div>
+            <span class="d-flex">
+              <label for="input_n_classes"> <b>Número de clases</b></label>
+              <input
+                type="number"
+                value="13"
+                class="p-1 ml-2 form-control"
+                id="input_n_classes"
+                max="100"
+                min="1"
+                required
+              />
+            </span>
 
-                    
-                      
-                      <span class="d-flex ">
-                        <label for="input_n_classes"
-                          > <b>Número de clases</b></label
-                        >
-                        <input
-                          type="number"
-                          value="13"
-                          class="p-1 ml-2 form-control"
-                          id="input_n_classes"
-                        />
-                      </span>
-                    
-                      <div>
-                        <i
-                          title="revertir cambio"
-                          class="disabled fa-solid history_arrows past fa-arrow-rotate-left"
-                        ></i><i
-                          title="volver al cambio"
-                          class="fa-solid history_arrows future fa-arrow-rotate-right disabled "
-                        ></i>
-                      </div>
-                      <!-- <span class="parent_btn_submit">
+            <div>
+              <button
+                title="revertir cambio"
+                class="disabled fa-solid history_arrows past fa-arrow-rotate-left"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M13.427 3.021h-7.427v-3.021l-6 5.39 6 5.61v-3h7.427c3.071 0 5.561 2.356 5.561 5.427 0 3.071-2.489 5.573-5.561 5.573h-7.427v5h7.427c5.84 0 10.573-4.734 10.573-10.573s-4.733-10.406-10.573-10.406z"
+                  />
+                </svg></button
+              ><button
+                title="volver al cambio"
+                class="fa-solid history_arrows future fa-arrow-rotate-right disabled"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M10.573 3.021h7.427v-3.021l6 5.39-6 5.61v-3h-7.427c-3.071 0-5.561 2.356-5.561 5.427 0 3.071 2.489 5.573 5.561 5.573h7.427v5h-7.427c-5.84 0-10.573-4.734-10.573-10.573s4.733-10.406 10.573-10.406z"
+                  />
+                </svg>
+              </button>
+            </div>
+            <!-- <span class="parent_btn_submit">
                         <input
                           type="submit"
                           title="Ctrl + s"
@@ -70,79 +87,80 @@
                           class="btn_submit mt-0"
                         />
                       </span> -->
-                    
-                  </div>
-                  <!-- /. -->
-                  
-                    <table
-                      class="asist_table "
-                    >
-                      <thead>
-                        <tr class="tr_class_numbers">
-                          <th class="th_students">Estudiantes (17) 
-                            <span class="parent_btn_submit">
-
-                              <button  id="create_student_btn" class=" btn_submit" title="Añadir nuevo estudiante"><i class="fa-solid fa-plus"></i></button>
-                            </span>                          
-                          </th>
-                          <template id="template_th">
-                            <th>
-                              <label for="c1" title="marcar toda la columna 1 ">
-                                <span class="text"></span>
-                                <input
-                                  type="checkbox"
-                                  class="marcar_col_input"
-                                  name=""
-                                  id="c1"
-                                />
-                              </label>
-                            </th>
-                          </template>
-                          
-                          
-
-                          <th class="th_total">Total</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <template id="template_tr">
-                          <tr>
-                            <td>
-                                <input
-                                  type="text"
-                                  class="student_name"
-                                  name=""
-                                  id="3"
-                                  value="Dolores Pecho Barba">
-                    
-                                  <button class="delete_student_btn" title="Eliminar Estudiante">x</button>
-                             
-                            </td>
-                            
-                            <td class="each_total">0%</td>
-                          </tr>
-                        </template>
-                        <template id="template_td">
-                          <td class="each_cell"></td>
-                       </template>
-                      </tbody>
-                    </table>
-                  
-                  <!-- /.card-body -->
-                
-            
           </div>
-          <!-- /.row -->
-        </main>
-      
-    
+          <!-- /. -->
 
+          <table class="asist_table">
+            <thead>
+              <tr class="tr_class_numbers"></tr>
+            </thead>
+            <tbody>
+              <template id="template_tr">
+                <tr>
+                  <td class="td_student_name">
+                    <input
+                      type="text"
+                      class="student_name_input"
+                      name=""
+                      id=""
+                      value=""
+                    />
+
+                    <button
+                      class="delete_student_btn"
+                      title="Eliminar Estudiante"
+                    >
+                      x
+                    </button>
+                  </td>
+
+                  <td class="each_total">0%</td>
+                </tr>
+              </template>
+            </tbody>
+          </table>
+          <span id="bottom_of_table"></span>
+
+          <!-- /.card-body -->
+        </div>
+        <!-- /.row -->
+        <template id="template_th_student">
+          <th class="th_students">
+            <span>
+              Estudiantes
+              (<span id="th_nro_students">0</span>)
+            </span>
+            <span class="parent_btn_submit">
+              <button
+                id="create_student_btn"
+                class="btn_submit"
+                title="Añadir nuevo estudiante"
+              >
+                +
+              </button>
+            </span>
+          </th>
+        </template>
+    
+        <template id="template_th">
+          <th class="th_each_colunm">
+            <label title="marcar toda la columna 1 ">
+              <span class="text"></span>
+              <input type="checkbox" class="marcar_col_input" name="" />
+            </label>
+          </th>
+        </template>
+    
+        <template id="template_th_total">
+          <th class="th_total">Total</th>
+        </template>
+
+        <template id="template_td">
+          <td class="each_cell"></td>
+        </template>
+      </main>
     </div>
 
-   
-
-    
-    <script src="javascripts/asistencia.js"></script>
-    
+    <script type="module" src="javascripts/asistencia.js"></script>
   </body>
 </html>

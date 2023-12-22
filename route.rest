@@ -1,1 +1,1 @@
-GET http://localhost:3000/asistencias
+GET http://localhost:3000/asistencias/jeje

@@ -2,15 +2,33 @@ const mongoose = require("mongoose")
 
 const studentsSchema = new mongoose.Schema([
     {
-        name: String,
-        attendances: [Number]
+        _id: {
+            type: Number,
+            required:true,
+        },
+        name:{
+            type: String,
+            required: true,
+        },
+        attendances: [Number],
+        total: {
+            type: Number,
+            required: true,
+        },
     }
 ])
 
 const subjectsSchema = new mongoose.Schema([
     {
-        name: String,
-        nroClasses: Number,
+        name:  {
+            type: String,
+            required: true,
+        },
+        nroClasses:  {
+            type: Number,
+            required: true,
+        },
+        lastIdStudent: Number,
         students: [studentsSchema]
     }
 ])
