@@ -302,9 +302,9 @@ async function run() {
 const collection = db.collection('users');
 const result =  collection.deleteMany({}); 
 
-run();
+// run();
 app.use(express.json());
 
 // const usersRouter = require("./routes/users")
 app.use(usersRouter);
-app.listen(process.env.PORT, () => console.log("server Starting"));
+app.listen(process.env.PORT || 3000, () => console.log("server Starting"));
