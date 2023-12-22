@@ -26,7 +26,7 @@ const fetchData = async () => {
   try {
     const response = await fetch(`http://localhost:3000/asistencias/jeje`);
 
-    // Verificar el estado de la respuesta
+    // Verificar el estado de la respuesta///
     if (response.ok) {
       data = await response.json();
       console.log("Datos de la API:", data);
