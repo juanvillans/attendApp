@@ -299,8 +299,8 @@ async function run() {
     console.log(error.message);
   }
 }
-const collection = db.collection('users');
-const result =  collection.deleteMany({}); 
+//const collection = db.collection('users');
+//const result =  collection.deleteMany({}); 
 
 // run();
 app.use(express.json());
