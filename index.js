@@ -3,7 +3,7 @@ const usersRouter = require("./routes/users");
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
-const cors = require("cors");
+const cors = require("cors");//
 const path = require("path");
 const Users = require("./models/Users");
 
@@ -36,6 +36,7 @@ db.once("open", () => {
       console.error('Error retrieving collections:', error);
     });
 });
+
 
 
 async function run() {
@@ -316,13 +317,7 @@ async function run() {
 }
 // const collection = db.collection('users');
 // const result =  collection.deleteMany({}); 
-const usersAll = Users.find({})
-  .then((documents) => {
-    console.log('Documents:', documents);
-  })
-  .catch((error) => {
-    console.error('Error retrieving documents:', error);
-  });
+
 // run();
 app.use(express.json());
 

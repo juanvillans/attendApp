@@ -14,7 +14,6 @@ router.get("/asistencias", async (req, res) => {
 router.get("/asistencias/:id", async (req, res) => {
     try {
         
-
       const user = await Users.findById("6585c9758e3d68f619be8207");
       res.json(user);
       console.log(user)
