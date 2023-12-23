@@ -24,7 +24,7 @@ let data = {};
 let selectedSubjectID = "6585c9758e3d68f619be8208";
 const fetchData = async () => {
   try {
-    const response = await fetch(`${URL_DOMAIN}/asistencias/jeje`);
+    const response = await fetch(`${URL_DOMAIN}asistencias/jeje`);
 
     // Verificar el estado de la respuesta///
     if (response.ok) {
