@@ -238,6 +238,19 @@ fieldset {
   }
 }
 
+.rightToLeft {
+  opacity: 0;
+  transform: inherit;
+  animation: rightToLeft .2s ease;
+  animation-fill-mode: forwards;
+}
+
+@keyframes rightToLeft {
+  to {
+    transform: translateX(-300px);
+    opacity: 1;
+  }
+}
 
 .history_arrows:hover {
   cursor: pointer;
@@ -331,8 +344,9 @@ header {
   color: #21e6c1;
 }
 .intro_table {
-  display: flex;
+  display: grid;
   justify-content: space-between;
+  grid-template-columns: repeat(3, 1fr);
   position: sticky;
   padding: 15px 1px;
   align-items: center;
@@ -361,6 +375,15 @@ header {
   color: inherit;
   cursor: default;
 }
+.history_arrows_cont {
+  
+  /* text-align: right; */
+  justify-self: end;
+}
+.n_classes_cont {
+  justify-self: center;
+}
+
 
 label:hover {
   cursor: pointer;
@@ -527,4 +550,34 @@ tbody tr td:last-child {
   color: #21e6c1;
   font-weight: bold;
   background: #081f3d !important;
-}/*# sourceMappingURL=asistencia.css.map */
+}
+@media (max-width: 500px) {
+  .intro_table {
+    grid-template-columns: repeat(2, 1fr);
+    /* display: block; */
+    padding: 10px 5px;
+    
+  }
+  .asist_table thead {
+    top: 131.4px;
+  }
+  .history_arrows_cont {
+    float: right;
+    position: relative;
+    display: flex;
+    gap: 5px;
+    align-self: start;
+    /* top: -60px; */
+  }
+  .n_classes_cont {
+    display: flex;
+    order: 2;
+    justify-self: start;
+    margin-top: 10px;
+    flex-direction: column !important;
+  }
+  .intro_table * {
+    font-size: 14px !important;
+  }
+}
+/*# sourceMappingURL=asistencia.css.map */

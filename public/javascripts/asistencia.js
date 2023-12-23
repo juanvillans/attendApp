@@ -239,6 +239,7 @@ table.addEventListener("click", (e) => {
   // delete student
   if (el_clicked.classList.contains("delete_student_btn")) {
     const tr = el_clicked.closest("tr");
+    tr.classList.add('rightToLeft')
     document.querySelector("#th_nro_students").textContent--;
     const id_student = tr.dataset.id;
     const index = subjectData.students.findIndex(
@@ -246,7 +247,11 @@ table.addEventListener("click", (e) => {
     );
     subjectData.students.splice(index, 1);
 
-    tr.remove();
+    setTimeout(() => {
+      
+      tr.remove();
+    }, 200);
+    
   }
 
   // click to create a new student
