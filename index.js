@@ -23,8 +23,6 @@ const db = mongoose.connection;
 db.on("error", (error) => console.error(error));
 db.once("open", () => console.log("conecction to db"));
 
-const usersAll = Users.find();
-        console.log('todos los usuarios son: ', usersAll);
 
 async function run() {
   try {
