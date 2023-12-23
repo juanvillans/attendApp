@@ -6,7 +6,6 @@ const mongoose = require("mongoose");
 const cors = require("cors");//
 const path = require("path");
 const Users = require("./models/Users");
-
 app.use(cors());
 app.options("*", cors());
 app.use(express.static(path.join(__dirname, "public")));
