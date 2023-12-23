@@ -21,7 +21,22 @@ mongoose.connect(
 );
 const db = mongoose.connection;
 db.on("error", (error) => console.error(error));
-db.once("open", () => console.log("conecction to db"));
+db.once("open", () => {
+  console.log("Connected to the database");
+
+  // Retrieve the list of collections
+  db.db.listCollections().toArray()
+    .then((collections) => {
+      // Print the names of the collections
+      collections.forEach(function (collection) {
+        console.log(collection.name);
+      });
+    })
+    .catch((error) => {
+      console.error('Error retrieving collections:', error);
+    });
+});
+
 
 async function run() {
   try {
@@ -299,12 +314,18 @@ async function run() {
     console.log(error.message);
   }
 }
-const collection = db.collection('users');
-const result =  collection.deleteMany({}); 
-
+// const collection = db.collection('users');
+// const result =  collection.deleteMany({}); 
+const usersAll = Users.find({})
+  .then((documents) => {
+    console.log('Documents:', documents);
+  })
+  .catch((error) => {
+    console.error('Error retrieving documents:', error);
+  });
 // run();
 app.use(express.json());
 
 // const usersRouter = require("./routes/users")
 app.use(usersRouter);
-app.listen(process.env.PORT || 3000, () => console.log("server Starting"));
+app.listen(process.env.PORT, () => console.log("server Starting"));

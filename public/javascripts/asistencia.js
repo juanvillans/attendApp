@@ -1,5 +1,3 @@
-
-
 const thead = document.querySelector("thead tr");
 const input_n_classes = document.getElementById("input_n_classes");
 const th_total = document.querySelector(".th_total");
@@ -30,7 +28,9 @@ const fetchData = async () => {
     if (response.ok) {
       data = await response.json();
       console.log("Datos de la API:", data);
-      printData("6585c9758e3d68f619be8208");
+      if (data != null) {
+        printData("6585c9758e3d68f619be8208");
+      }
     } else {
       console.error("Error en la solicitud:", response.status);
     }
@@ -56,10 +56,8 @@ function printData(subjectId) {
   document.getElementById("input_n_classes").value = subjectData.nroClasses;
   actual_n_classes = subjectData.nroClasses;
 
- nro_students = template_th_student.querySelector(
-    "#th_nro_students"
-  )
- nro_students.textContent = `${subjectData.students.length}`;
+  nro_students = template_th_student.querySelector("#th_nro_students");
+  nro_students.textContent = `${subjectData.students.length}`;
   const clone_th_student = template_th_student.cloneNode(true);
 
   const fragment_th = document.createDocumentFragment();
@@ -136,7 +134,7 @@ function addOrRemoveCells(future_n_classes) {
       fragment_th.appendChild(clone_th);
       fragment_td.appendChild(clone_td);
 
-      for (let j = 0; j <nro_students.textContent; j++) {
+      for (let j = 0; j < nro_students.textContent; j++) {
         subjectData.students[j].attendances.push(0);
       }
     }
@@ -175,9 +173,7 @@ function addOrRemoveCells(future_n_classes) {
     subjectData.students.forEach((student, i) => {
       student.attendances.splice(number_left, future_n_classes);
 
-      
-        calPercentage(student.total, future_n_classes, all_total_td[i])
-      
+      calPercentage(student.total, future_n_classes, all_total_td[i]);
     });
 
     const after = Date.now();
@@ -212,72 +208,79 @@ table.addEventListener("click", (e) => {
   if (el_clicked.classList.contains("each_cell")) {
     el_clicked.classList.toggle("attended");
     const tr = el_clicked.parentElement;
-    const id_student = tr.dataset.id
-    const index_student = tr.dataset.index
-    let student = subjectData.students[index_student]
-    
+    const id_student = tr.dataset.id;
+    const index_student = tr.dataset.index;
+    let student = subjectData.students[index_student];
+
     if (student._id != id_student) {
-      student = subjectData.students.find(objStudent => objStudent._id == id_student)
-    } 
-    
+      student = subjectData.students.find(
+        (objStudent) => objStudent._id == id_student
+      );
+    }
+
     const attendanceValue = student.attendances[el_clicked.dataset.col];
     if (attendanceValue === 1) {
       student.total -= 1;
     } else {
       student.total += 1;
     }
-  
-    
+
     calPercentage(
       student.total,
       actual_n_classes,
       tr.querySelector(".each_total")
     );
     student.attendances[el_clicked.dataset.col] = attendanceValue === 1 ? 0 : 1;
-    console.log(subjectData)
+    console.log(subjectData);
   }
 
   // delete student
   if (el_clicked.classList.contains("delete_student_btn")) {
-    const tr = el_clicked.closest('tr')
-    document.querySelector("#th_nro_students").textContent--
-    const id_student = tr.dataset.id
-    const index = subjectData.students.findIndex(student => student._id == id_student)
-    subjectData.students.splice(index,1)
-    
-    
-    tr.remove()
+    const tr = el_clicked.closest("tr");
+    document.querySelector("#th_nro_students").textContent--;
+    const id_student = tr.dataset.id;
+    const index = subjectData.students.findIndex(
+      (student) => student._id == id_student
+    );
+    subjectData.students.splice(index, 1);
+
+    tr.remove();
   }
 
   // click to create a new student
   if (el_clicked.id === "create_student_btn") {
-    const newNroStudent = ++document.querySelector("#th_nro_students").textContent
-    console.log(nro_students)
+    const newNroStudent = ++document.querySelector("#th_nro_students")
+      .textContent;
+    console.log(nro_students);
     const clone_tr = template_tr.cloneNode(true);
-    subjectData.lastIdStudent += 1
+    subjectData.lastIdStudent += 1;
     clone_tr.querySelector("tr").dataset.id = subjectData.lastIdStudent;
     clone_tr.querySelector("tr").dataset.index = newNroStudent;
-    
+
     let fragment_td = document.createDocumentFragment();
-    
-    for (let i = 0; i< actual_n_classes; i++) {
+
+    for (let i = 0; i < actual_n_classes; i++) {
       template_td.querySelector(".each_cell").dataset.col = i;
-      
+
       const clone_td = template_td.cloneNode(true);
       fragment_td.appendChild(clone_td);
     }
-    
+
     clone_tr.querySelector(`.each_total`).before(fragment_td);
     tbody.appendChild(clone_tr);
     subjectData.students.push({
       _id: subjectData.lastIdStudent,
       name: "",
       attendances: new Array(actual_n_classes).fill(0),
-      total: 0
-    })
-    tbody.querySelector(`tr[data-id="${subjectData.lastIdStudent}"] .student_name_input`).focus();
+      total: 0,
+    });
+    tbody
+      .querySelector(
+        `tr[data-id="${subjectData.lastIdStudent}"] .student_name_input`
+      )
+      .focus();
 
-console.log(data)
+    console.log(data);
   }
 });
 
@@ -323,29 +326,30 @@ table.addEventListener("change", (e) => {
     if (el_changed.checked) {
       cells_of_column.forEach((cell, i) => {
         cell.classList.add("attended");
-        let student = subjectData.students[i]
+        let student = subjectData.students[i];
         student.attendances[nroCol] = 1;
-        student.total++
-        calPercentage(student.total, actual_n_classes, all_total_td[i])
+        student.total++;
+        calPercentage(student.total, actual_n_classes, all_total_td[i]);
       });
     } else {
       cells_of_column.forEach((cell, i) => {
         cell.classList.remove("attended");
-        let student = subjectData.students[i]
+        let student = subjectData.students[i];
         student.attendances[nroCol] = 0;
-        student.total--
-        calPercentage(student.total, actual_n_classes, all_total_td[i])
+        student.total--;
+        calPercentage(student.total, actual_n_classes, all_total_td[i]);
       });
     }
     // getData();
   }
 
   // editing the name of a student
-  if(el_changed.classList.contains("student_name_input")) { 
-    const value = el_changed.value
-    const tr = el_changed.closest('tr')
-    const id_student = tr.dataset.id
-    subjectData.students.find(student => student._id == id_student).name = value
+  if (el_changed.classList.contains("student_name_input")) {
+    const value = el_changed.value;
+    const tr = el_changed.closest("tr");
+    const id_student = tr.dataset.id;
+    subjectData.students.find((student) => student._id == id_student).name =
+      value;
   }
   // fill all or mark all
   // if (el_changed.id === "marcar_todos") {
@@ -357,7 +361,6 @@ table.addEventListener("change", (e) => {
   //   getData();
   // }
 });
-
 
 // get data
 const history = [];
