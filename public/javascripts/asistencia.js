@@ -155,7 +155,7 @@ function printData(arraySelectedSubject, isFirstTime= false, scrollIndex) {
     table_container.scrollLeft =  colLeft 
     console.log(colLeft)
   }
-  }, 50);
+  }, 0.20);
 }
 
 function addOrRemoveCells(future_n_classes) {
