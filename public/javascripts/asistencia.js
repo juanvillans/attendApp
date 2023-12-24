@@ -76,7 +76,7 @@ function printData(arraySelectedSubject, isFirstTime= false, scrollIndex) {
     table_container.scrollLeft =  history[scrollIndex].scrollLeft
     table_container.scrollTop =  history[scrollIndex].scrollTop
   }
-  table_container.classList.add('opacity_1')
+  // tbody.classList.add('opacity_1')
 
   setTimeout(() => {
     
@@ -146,7 +146,7 @@ function printData(arraySelectedSubject, isFirstTime= false, scrollIndex) {
     tbody.appendChild(fragment_tr);
     
   
-  table_container.classList.remove('opacity_1')
+  // tbody.classList.remove('opacity_1')
   if (isFirstTime) {
     tbody.style.minWidth = '5000px'
     // const colLeft = document.querySelector(`.marcar_col_input[data-col="${subjectData.lastAttendedDay-1}"]`).getBoundingClientRect().left
@@ -155,7 +155,7 @@ function printData(arraySelectedSubject, isFirstTime= false, scrollIndex) {
     table_container.scrollLeft =  colLeft 
     console.log(colLeft)
   }
-  }, 200);
+  }, 50);
 }
 
 function addOrRemoveCells(future_n_classes) {
@@ -304,7 +304,7 @@ table.addEventListener("click", (e) => {
   // delete student
   if (el_clicked.classList.contains("delete_student_btn")) {
     const tr = el_clicked.closest("tr");
-    tr.classList.add("rightToLeft");
+    tr.classList.add("opacity_1");
     document.querySelector("#th_nro_students").textContent--;
     const id_student = tr.dataset.id;
     const tr_index = +tr.dataset.index
