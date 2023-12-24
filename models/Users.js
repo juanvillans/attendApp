@@ -29,6 +29,7 @@ const subjectsSchema = new mongoose.Schema([
             required: true,
         },
         lastIdStudent: Number,
+        lastAttendedDay: Number,
         students: [studentsSchema]
     }
 ])

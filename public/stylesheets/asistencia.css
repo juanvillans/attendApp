@@ -388,7 +388,11 @@ header {
 label:hover {
   cursor: pointer;
 }
-
+ .asist_table tr .each_student_number:nth-child(n+3) {
+  background-color: red !important;
+  color: red !important;
+  width: 100px !important;
+}
 .asist_table {
   width: 100%;
   max-width: 100%;
@@ -451,7 +455,6 @@ label:hover {
 }
 input.student_name_input {
   font-size: 15px;
-  margin-left: 7px;
   background: transparent;
   width: 100%;
   height: 100%;
@@ -501,7 +504,14 @@ tr td:first-child {
   align-items: center;
   padding:0 8px;
 }
+.each_student_number {
+  font-size: 14px;
+  opacity: .8;
+}
+
 .delete_student_btn {
+  margin-right: 7px;
+
   color: #278ea5;
   font-size: 17px;
   clip-path: polygon(25% 0%, 100% 0%, 100% 100%, 25% 100%, 0% 50%);
@@ -580,4 +590,13 @@ tbody tr td:last-child {
     font-size: 14px !important;
   }
 }
-/*# sourceMappingURL=asistencia.css.map */
+.opacity_1 {
+  opacity: 1;
+  animation: opacity_1 .2s ease;
+  animation-fill-mode: forwards;
+}
+@keyframes opacity_1 {
+  to {
+    opacity: 0;
+  }
+}
