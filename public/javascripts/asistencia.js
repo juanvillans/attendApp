@@ -18,8 +18,7 @@ const select_area = document.querySelector("#select_area");
 let subjectData = {};
 let all_cells = [...document.getElementsByClassName("each_cell")];
 const all_total_td = document.getElementsByClassName("each_total");
-const edit_subject_button = document.querySelector('#edit_subject_button');
-
+const edit_subject_button = document.querySelector("#edit_subject_button");
 
 let actual_n_classes = +input_n_classes.value;
 let history = [];
@@ -45,28 +44,26 @@ const debounce = (fn, delay) => {
 };
 
 const template_option = document.querySelector("#template_option").content;
-console.log(template_option);
 const fetchData = async () => {
-  data = localStorage.getItem('data');
+  data = localStorage.getItem("data");
   if (data) {
-    data = JSON.parse(data)
-    console.log('los tados existen en el localstorage', data)
-    printOptionsAndSettleDown()
+    data = JSON.parse(data);
+    console.log("los tados existen en el localstorage", data);
+    printOptionsAndSettleDown();
   } else {
-
     try {
       const response = await fetch(
         `https://attend-app-rho.vercel.app/asistencias/jeje`
       );
-  
+
       // Verificar el estado de la respuesta///
       if (response.ok) {
         data = await response.json();
         console.log("Datos de la API:", data);
-  
+
         if (data != null) {
-          printOptionsAndSettleDown()
-          localStorage.setItem('data', JSON.stringify(data));
+          printOptionsAndSettleDown();
+          localStorage.setItem("data", JSON.stringify(data));
         }
       } else {
         console.error("Error en la solicitud:", response.status);
@@ -74,7 +71,6 @@ const fetchData = async () => {
     } catch (error) {
       console.error("Error en la solicitud:", error);
     }
-
   }
   function printOptionsAndSettleDown() {
     const fragment_option = document.createDocumentFragment();
@@ -86,10 +82,8 @@ const fetchData = async () => {
         cloned_option.querySelector("option").dataset.id = subject._id;
         cloned_option.querySelector("option").textContent = subject.name;
         fragment_option.appendChild(cloned_option);
-        console.log(subject._id, subject.name);
       });
     select_area.append(fragment_option);
-    console.log(select_area, fragment_option);
     subjectData = data.subjects[0];
     selectedSubjectID = subjectData._id;
 
@@ -111,14 +105,15 @@ const template_td = document.querySelector("#template_td").content;
 
 function printData(arraySelectedSubject, isFirstTime = false, scrollIndex) {
   if (!isFirstTime) {
-    console.log(arraySelectedSubject.scrollTop);
     table_container.scrollLeft = history[scrollIndex].scrollLeft;
     table_container.scrollTop = history[scrollIndex].scrollTop;
   }
   // tbody.classList.add('opacity_1')
 
   setTimeout(() => {
-    console.log({ arraySelectedSubject });
+    const before = Date.now();
+// my loading from mongo
+
     tbody.innerHTML = "";
     thead.innerHTML = "";
     // subjectData = data.subjects.find((subject) => subject._id == subjectId);
@@ -160,7 +155,6 @@ function printData(arraySelectedSubject, isFirstTime = false, scrollIndex) {
       clone_tr.querySelector(".student_name_input").value = student.name;
 
       let fragment_td = document.createDocumentFragment();
-      // console.log(student.attendances.length)
       student.attendances.forEach((attended, col) => {
         template_td.querySelector(".each_cell").dataset.col = col;
         if (attended == 1) {
@@ -191,8 +185,9 @@ function printData(arraySelectedSubject, isFirstTime = false, scrollIndex) {
       const colLeft = 57 * +subjectData.lastAttendedDay;
       // const th_sutendt_width = document.querySelector('.td_student_name').offsetWidth
       table_container.scrollLeft = colLeft;
-      console.log(colLeft);
     }
+    const after = Date.now();
+console.log('Print data in : ', (after - before) / 1000);
   }, 0.2);
 }
 
@@ -244,7 +239,6 @@ function addOrRemoveCells(future_n_classes) {
     const tdsToRemove = document.querySelectorAll(
       `tr[data-id] > .each_cell:nth-child(n + ${future_n_classes + 2})`
     );
-    // console.log(future_n_classes)
     Array.from(thsToRemove).forEach((th) => th.remove());
     Array.from(tdsToRemove).forEach((td) => td.remove());
 
@@ -254,7 +248,6 @@ function addOrRemoveCells(future_n_classes) {
       calPercentage(student.total, future_n_classes, all_total_td[i]);
     });
   }
-  console.log({ data });
   actual_n_classes = future_n_classes;
 }
 
@@ -280,17 +273,17 @@ let areYouSureThatDayAlert = true;
 table.addEventListener("click", (e) => {
   const el_clicked = e.target;
   if (el_clicked.classList.contains("edit_subject_button")) {
-    
-    let editSubjectName = prompt("Nombre de la materia", subjectData.name)
+    let editSubjectName = prompt("Nombre de la materia", subjectData.name);
 
     if (editSubjectName === null) {
-      
     } else if (editSubjectName.trim() === "") {
       alert("No se puede ingresar un valor vacío.");
     } else {
-      select_area.querySelector(`option[data-id="${subjectData._id}"]`).textContent = editSubjectName
+      select_area.querySelector(
+        `option[data-id="${subjectData._id}"]`
+      ).textContent = editSubjectName;
       subjectData.name = editSubjectName;
-      saveInLocalStorage()
+      saveInLocalStorage();
     }
   }
   // click in each attended cell
@@ -322,7 +315,6 @@ table.addEventListener("click", (e) => {
     function executeRestOfCode() {
       el_clicked.classList.toggle("attended");
       let student = subjectData.students[index_student];
-      console.log(student);
       if (student._id != id_student) {
         student = subjectData.students.find(
           (objStudent) => objStudent._id == id_student
@@ -367,7 +359,7 @@ table.addEventListener("click", (e) => {
         }
       }
       saveHistoryInMemory();
-      saveInLocalStorage()
+      saveInLocalStorage();
     }
   }
 
@@ -376,6 +368,7 @@ table.addEventListener("click", (e) => {
     const tr = el_clicked.closest("tr");
     tr.classList.add("opacity_1");
     document.querySelector("#th_nro_students").textContent--;
+    nro_students.textContent--
     const id_student = tr.dataset.id;
     const tr_index = +tr.dataset.index;
     const index = subjectData.students.findIndex(
@@ -383,7 +376,7 @@ table.addEventListener("click", (e) => {
     );
     subjectData.students.splice(tr_index, 1);
     saveHistoryInMemory();
-    saveInLocalStorage()
+    saveInLocalStorage();
 
     setTimeout(() => {
       tr.remove();
@@ -394,59 +387,60 @@ table.addEventListener("click", (e) => {
         newTrs[i].dataset.index = +i;
       }
     }, 150);
-    console.log({ subjectData });
   }
 
   // click to create a new student
   if (el_clicked.id === "create_student_btn") {
-    const newNroStudent = ++document.querySelector("#th_nro_students")
-      .textContent;
-    console.log(nro_students);
-    const clone_tr = template_tr.cloneNode(true);
-    subjectData.lastIdStudent += 1;
-    clone_tr.querySelector("tr").dataset.id = subjectData.lastIdStudent;
-    clone_tr.querySelector("tr").dataset.index = newNroStudent - 1;
-    clone_tr.querySelector(".each_student_number").textContent = newNroStudent;
-    let fragment_td = document.createDocumentFragment();
-
-    for (let i = 0; i < actual_n_classes; i++) {
-      template_td.querySelector(".each_cell").dataset.col = i;
-
-      const clone_td = template_td.cloneNode(true);
-      fragment_td.appendChild(clone_td);
-    }
-
-    clone_tr.querySelector(`.each_total`).before(fragment_td);
-    tbody.appendChild(clone_tr);
-    subjectData.students.push({
-      _id: subjectData.lastIdStudent,
-      name: "",
-      attendances: new Array(actual_n_classes).fill(0),
-      total: 0,
-    });
-    tbody
-      .querySelector(
-        `tr[data-id="${subjectData.lastIdStudent}"] .student_name_input`
-      )
-      .focus();
-    saveHistoryInMemory();
-    saveInLocalStorage()
+    
+    createNewStudent();
   }
 });
 
+function createNewStudent() {
+  const newNroStudent = ++document.querySelector("#th_nro_students")
+    .textContent;
+    nro_students.textContent++
+  const clone_tr = template_tr.cloneNode(true);
+  subjectData.lastIdStudent += 1;
+  clone_tr.querySelector("tr").dataset.id = subjectData.lastIdStudent;
+  clone_tr.querySelector("tr").dataset.index = newNroStudent - 1;
+  clone_tr.querySelector(".each_student_number").textContent = newNroStudent;
+  let fragment_td = document.createDocumentFragment();
+
+  for (let i = 0; i < actual_n_classes; i++) {
+    template_td.querySelector(".each_cell").dataset.col = i;
+
+    const clone_td = template_td.cloneNode(true);
+    fragment_td.appendChild(clone_td);
+  }
+
+  clone_tr.querySelector(`.each_total`).before(fragment_td);
+  tbody.appendChild(clone_tr);
+  subjectData.students.push({
+    _id: subjectData.lastIdStudent,
+    name: "",
+    attendances: new Array(actual_n_classes).fill(0),
+    total: 0,
+  });
+  tbody
+    .querySelector(
+      `tr[data-id="${subjectData.lastIdStudent}"] .student_name_input`
+    )
+    .focus();
+  saveHistoryInMemory();
+  saveInLocalStorage();
+}
 // document.querySelector('#newSubjectOption').value = ;
 
 table.addEventListener("change", (e) => {
   const el_changed = e.target;
 
-  
   // change the select subject
   if (el_changed.id == "select_area") {
     if (el_changed.value == "newSubjectOption") {
       let newObjectText = prompt("Escribe el nombre de la nueva materia");
       if (newObjectText === null) {
         // El usuario seleccionó "Cancelar"
-        console.log("El usuario seleccionó Cancelar.");
         select_area.value = selectedSubjectID;
       } else if (newObjectText.trim() === "") {
         // El usuario no ingresó ningún valor
@@ -460,7 +454,7 @@ table.addEventListener("change", (e) => {
           students: [],
           nroClasses: 24,
           lastIdStudent: 0,
-          lastAttendedDay: 1,
+          lastAttendedDay: 0,
         };
         data.subjects.push(newSubject);
         subjectData = newSubject;
@@ -470,12 +464,12 @@ table.addEventListener("change", (e) => {
         newOption.selected = true;
         el_changed.append(newOption);
         printData(subjectData, true);
-        history = []
-        now = 0
-            future.classList.add("disabled");
-          past.classList.add("disabled");
+        history = [];
+        now = 0;
+        future.classList.add("disabled");
+        past.classList.add("disabled");
 
-          saveInLocalStorage()
+        saveInLocalStorage();
         // El usuario seleccionó "Aceptar"
       }
     } else {
@@ -483,12 +477,11 @@ table.addEventListener("change", (e) => {
         (subject) => subject._id == el_changed.value
       );
       printData(subjectData, true);
-      history = []
-        now = 0
-        future.classList.add("disabled");
-        past.classList.add("disabled");
+      history = [];
+      now = 0;
+      future.classList.add("disabled");
+      past.classList.add("disabled");
     }
-    console.log(history)
     // printData(el_changed.value);
   }
 
@@ -518,7 +511,7 @@ table.addEventListener("change", (e) => {
     subjectData.nroClasses = +el_changed.value;
     addOrRemoveCells(+input_n_classes.value);
     saveHistoryInMemory();
-    saveInLocalStorage()
+    saveInLocalStorage();
     // all_cells = [...document.getElementsByClassName("each_cell")];
     // getData();
   }
@@ -604,38 +597,19 @@ table.addEventListener("change", (e) => {
         }
       }
       saveHistoryInMemory();
-      saveInLocalStorage()
+      saveInLocalStorage();
       // console.log({ subjectData });
     }
-    // getData();
   }
 
-  // editing the name of a student
-  // if (el_changed.classList.contains("student_name_input")) {
-  //   const value = el_changed.value;
-  //   const tr = el_changed.closest("tr");
-  //   const id_student = tr.dataset.id;
-  //   console.log('ejee ')
-  //   (debounce(() => {
-  //     subjectData.students.find((student) => student._id == id_student).name = value;
-  //   }, 500))
-  // }
-  // fill all or mark all
-  // if (el_changed.id === "marcar_todos") {
-  //   if (select_all_check.checked) {
-  //     all_cells.forEach((each_cell) => each_cell.classList.add("attended"));
-  //   } else {
-  //     all_cells.forEach((each_cell) => each_cell.classList.remove("attended"));
-  //   }
-  //   getData();
-  // }
+  
 });
 
 const debounceEditStudentName = debounce((value, id_student) => {
   subjectData.students.find((student) => student._id == id_student).name =
     value;
   saveHistoryInMemory();
-  saveInLocalStorage()
+  saveInLocalStorage();
 }, 450);
 
 table.addEventListener("input", (e) => {
@@ -651,15 +625,11 @@ table.addEventListener("input", (e) => {
 
 let clonedData = "";
 function saveHistoryInMemory() {
-  // copy of subjectData
-  // const clonedData = Object.assign({}, subjectData);
-  console.log("que es lo que pasa?");
   let clonedData = JSON.parse(JSON.stringify(subjectData));
   clonedData.scrollLeft = table_container.scrollLeft;
   clonedData.scrollTop = table_container.scrollTop;
 
   if (now < history.length - 1) {
-    console.log(now + 1);
     console.log(history.length - now);
     history.splice(now + 1, history.length - now, clonedData);
     future.classList.add("disabled");
@@ -670,58 +640,14 @@ function saveHistoryInMemory() {
   }
 
   past.classList.remove("disabled");
-  if (now > 45) history.shift();
+  if (now > 25) history.shift();
   now = history.length - 1;
   if (now < 1) past.classList.add("disabled");
-  console.log(history);
 }
 // get data
 
 let all_asist_data = [];
 
-// function getData() {
-//   console.time("fn");
-//   all_asist_data = [];
-//   for (let i = 0; i < all_students_row.length; i++) {
-//     let obj = {};
-//     obj.estudiante = all_students_name[i].value;
-//     let asist_hist = [];
-
-//     all_students_row[i].querySelectorAll(".each_cell").forEach((each_cell) => {
-//       asist_hist.push(each_cell.classList.contains("attended") ? 1 : 0);
-//     });
-
-//     obj.asistencia = asist_hist;
-
-//     // get total percent attend
-//     let total =
-//       (asist_hist.reduce((sum, v) => v + sum) / actual_n_classes) * 100;
-//     total = total % 1 == 0 ? Math.trunc(total) : total.toFixed(1);
-//     obj.total = total;
-
-//     // now the let "obj" is for example { estudiante: "Juan Villasmil", asistencia: [1,0,1,1,1], total: 80%}
-
-//     // print total number in totals columns
-//     all_total_td[i].innerHTML = `${total}%`;
-//     classDependsTotal(total, i);
-//     all_asist_data.push(obj);
-//     console.timeEnd("fn");
-//   }
-
-//   if (now < history.length - 1) {
-//     history.splice(now + 1, history.length - (now + 1), all_asist_data);
-//     future.classList.add("disabled");
-//   } else {
-//     history.push(all_asist_data);
-//   }
-
-//   past.classList.remove("disabled");
-//   if (now > 45) history.shift();
-//   now = history.length - 1;
-//   if (now < 1) past.classList.add("disabled");
-//   console.log(all_asist_data);
-// }
-// getData();
 
 // remove or add class of style whether the total is less or more than 75
 function classDependsTotal(total, i) {
@@ -758,8 +684,17 @@ document.addEventListener("keydown", (e) => {
     e.preventDefault();
     goNext();
   }
+  if (e.key === "Enter") {
+    // console.log(e.target)
+    const tr = e.target.closest("tr");
+    const tr_index = +tr.dataset.index;
+    if (tr_index + 1 == nro_students.textContent) {
+      createNewStudent();
+    }
+    // Realizar la acción deseada aquí, por ejemplo, llamar a una función
+    // handleEnterKey();
+  }
 });
-
 function goBack() {
   if (now > 0) {
     future.classList.remove("disabled");
@@ -767,7 +702,7 @@ function goBack() {
     printData(history[now], false, now + 1);
 
     subjectData = JSON.parse(JSON.stringify(history[now]));
-    saveInLocalStorage()
+    saveInLocalStorage();
   }
   if (now == 0) {
     past.classList.add("disabled");
@@ -778,7 +713,7 @@ function goNext() {
   now++;
   printData(history[now], false, now);
   subjectData = JSON.parse(JSON.stringify(history[now]));
-  saveInLocalStorage()
+  saveInLocalStorage();
   if (now == history.length - 1) {
     future.classList.add("disabled");
   }
@@ -802,5 +737,5 @@ function printHistory(arr) {
 }
 
 function saveInLocalStorage() {
-  localStorage.setItem('data', JSON.stringify(data));
+  localStorage.setItem("data", JSON.stringify(data));
 }
