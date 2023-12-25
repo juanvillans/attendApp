@@ -4,9 +4,9 @@ const cacheName = 'attendApp-cache';
 const precacheResources = [
   '/',
   '/asistencia.html',
-  '/stylesheets/asistencia.css',
+  '/stylesheets/asistencia.min.css',
 //   '/app.js',
-  '/javascripts/asistencia.js'
+  '/javascripts/asistencia.min.js'
 ];
 
 // Instalación del Service Worker
