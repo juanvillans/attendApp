@@ -1,49 +1,33 @@
-const CACHE_NAME = 'mi-cache';
+const cacheName = 'attendApp-cache';
 
 // Archivos a almacenar en caché
-const urlsToCache = [
-//   '/',
-  './asistencia.html',
-  './stylesheets/asistencia.css',
+const precacheResources = [
+  '/',
+  '/asistencia.html',
+  '/stylesheets/asistencia.css',
 //   '/app.js',
-  './javascripts/asistencia.js'
+  '/javascripts/asistencia.js'
 ];
 
 // Instalación del Service Worker
-self.addEventListener('install', event => {
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => {
-        console.log('Caché abierto');
-        return cache.addAll(urlsToCache);
-      })
-  );
+self.addEventListener('install', (event) => {
+  console.log('Service worker install event!');
+  event.waitUntil(caches.open(cacheName).then((cache) => cache.addAll(precacheResources)));
 });
 
-// Activación del Service Worker
-self.addEventListener('activate', event => {
-  event.waitUntil(
-    caches.keys().then(cacheNames => {
-      return Promise.all(
-        cacheNames.filter(cacheName => {
-          return cacheName !== CACHE_NAME;
-        }).map(cacheName => {
-          return caches.delete(cacheName);
-        })
-      );
-    })
-  );
+self.addEventListener('activate', (event) => {
+  console.log('Service worker activate event!');
 });
 
-// Intercepta las solicitudes y responde con los recursos almacenados en caché
-self.addEventListener('fetch', event => {
+// When there's an incoming fetch request, try and respond with a precached resource, otherwise fall back to the network
+self.addEventListener('fetch', (event) => {
+  console.log('Fetch intercepted for:', event.request.url);
   event.respondWith(
-    caches.match(event.request)
-      .then(response => {
-        if (response) {
-          return response;
-        }
-        return fetch(event.request);
-      })
+    caches.match(event.request).then((cachedResponse) => {
+      if (cachedResponse) {
+        return cachedResponse;
+      }
+      return fetch(event.request);
+    }),
   );
 });
