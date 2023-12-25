@@ -42,7 +42,6 @@ const debounce = (fn, delay) => {
     }, delay);
   };
 };
-
 const template_option = document.querySelector("#template_option").content;
 const fetchData = async () => {
   data = localStorage.getItem("data");
@@ -394,6 +393,9 @@ table.addEventListener("click", (e) => {
     
     createNewStudent();
   }
+  if (el_clicked.id === "import_students") {
+    // select_area.size = select_area.options.length;
+  }
 });
 
 function createNewStudent() {
@@ -700,8 +702,9 @@ function goBack() {
     future.classList.remove("disabled");
     now--;
     printData(history[now], false, now + 1);
-
     subjectData = JSON.parse(JSON.stringify(history[now]));
+    const indexSubject = data.subjects.findIndex(subject => subject._id == subjectData._id)
+    data.subjects[indexSubject] = subjectData
     saveInLocalStorage();
   }
   if (now == 0) {
@@ -713,6 +716,8 @@ function goNext() {
   now++;
   printData(history[now], false, now);
   subjectData = JSON.parse(JSON.stringify(history[now]));
+  const indexSubject = data.subjects.findIndex(subject => subject._id == subjectData._id)
+  data.subjects[indexSubject] = subjectData
   saveInLocalStorage();
   if (now == history.length - 1) {
     future.classList.add("disabled");
