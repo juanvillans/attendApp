@@ -240,14 +240,17 @@ function addOrRemoveCells(future_n_classes) {
     );
     Array.from(thsToRemove).forEach((th) => th.remove());
     Array.from(tdsToRemove).forEach((td) => td.remove());
-
+    console.log({number_left,future_n_classes})
     subjectData.students.forEach((student, i) => {
-      student.attendances.splice(number_left, future_n_classes);
-
+      student.attendances.splice(future_n_classes);
+      console.log(student)
       calPercentage(student.total, future_n_classes, all_total_td[i]);
     });
+    console.log({subjectData})
   }
   actual_n_classes = future_n_classes;
+  saveInLocalStorage();
+
 }
 
 function calPercentage(numerator, denominator, td_total) {
@@ -514,7 +517,6 @@ table.addEventListener("change", (e) => {
     subjectData.nroClasses = +el_changed.value;
     addOrRemoveCells(+input_n_classes.value);
     saveHistoryInMemory();
-    saveInLocalStorage();
     // all_cells = [...document.getElementsByClassName("each_cell")];
     // getData();
   }
@@ -689,11 +691,14 @@ document.addEventListener("keydown", (e) => {
   }
   if (e.key === "Enter") {
     // console.log(e.target)
-    const tr = e.target.closest("tr");
-    const tr_index = +tr.dataset.index;
-    if (tr_index + 1 == nro_students.textContent) {
-      createNewStudent();
-    }
+    if (e.target.classList.contains('student_name_input')) {
+
+      const tr = e.target.closest("tr");
+      const tr_index = +tr.dataset.index;
+      if (tr_index + 1 == nro_students.textContent) {
+        createNewStudent();
+      }
+    } 
     // Realizar la acción deseada aquí, por ejemplo, llamar a una función
     // handleEnterKey();
   }
@@ -725,22 +730,6 @@ function goNext() {
   }
 }
 
-function printHistory(arr) {
-  addOrRemoveCells(arr[0].asistencia.length);
-  arr.forEach((e, i) => {
-    all_total_td[i].innerHTML = `${e.total}%`;
-    classDependsTotal(e.total, i);
-    e.asistencia.forEach((v, j) => {
-      let actual_cell = all_students_row[i].querySelectorAll(".each_cell")[j];
-      v == 0
-        ? actual_cell.classList.remove("attended")
-        : actual_cell.classList.add("attended");
-    });
-  });
-
-  input_n_classes.value = actual_n_classes;
-  all_asist_data = arr;
-}
 
 function saveInLocalStorage() {
   localStorage.setItem("data", JSON.stringify(data));
