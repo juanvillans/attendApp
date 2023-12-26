@@ -278,6 +278,7 @@ table.addEventListener("click", (e) => {
     } else if (editSubjectName.trim() === "") {
       alert("No se puede ingresar un valor vacío.");
     } else {
+      console.log(subjectData._id)
       select_area.querySelector(
         `option[data-id="${subjectData._id}"]`
       ).textContent = editSubjectName;
@@ -394,7 +395,6 @@ table.addEventListener("click", (e) => {
     createNewStudent();
   }
   if (el_clicked.id === "import_students") {
-    // select_area.size = select_area.options.length;
   }
 });
 
@@ -462,6 +462,7 @@ table.addEventListener("change", (e) => {
         subjectData = newSubject;
         const newOption = document.createElement("option");
         newOption.value = newId;
+        newOption.dataset.id = newId;
         newOption.textContent = newObjectText;
         newOption.selected = true;
         el_changed.append(newOption);
