@@ -481,8 +481,11 @@ tr td:first-child:not(.th_students) {
   position: sticky;
   right: 0;
   background-color: white;
+}
+.each_total {
   background: #1a778c;
   color: white;
+
 }
 
 .min75 {
