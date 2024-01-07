@@ -1,5 +1,4 @@
 const table_container = document.querySelector(".table_container");
-
 const thead = document.querySelector("thead tr");
 const input_n_classes = document.getElementById("input_n_classes");
 const th_total = document.querySelector(".th_total");
@@ -111,7 +110,7 @@ function printData(arraySelectedSubject, isFirstTime = false, scrollIndex) {
 
   setTimeout(() => {
     const before = Date.now();
-// my loading from mongo
+    // my loading from mongo
 
     tbody.innerHTML = "";
     thead.innerHTML = "";
@@ -186,11 +185,35 @@ function printData(arraySelectedSubject, isFirstTime = false, scrollIndex) {
       table_container.scrollLeft = colLeft;
     }
     const after = Date.now();
-console.log('Print data in : ', (after - before) / 1000);
+    console.log("Print data in : ", (after - before) / 1000);
   }, 0.2);
 }
 
 function addOrRemoveCells(future_n_classes) {
+
+  if (input_n_classes.value > 100) {
+    window.alert("El valor no puede ser mayor a 100");
+    input_n_classes.value = actual_n_classes;
+    return;
+  }
+  if (input_n_classes.value < subjectData.lastAttendedDay) {
+    // window.alert("El valor no puede ser mayor a 100");
+    if (
+      window.confirm(`No puede eliminar la columna del dia ${
+        subjectData.lastAttendedDay
+      } porque hay estudiantes registrados asistentes ese dia.
+       Se eliminará hasta la columna ${
+         subjectData.lastAttendedDay + 1
+       } en su lugar. ¿Está de acuerdo?`)
+    ) {
+      input_n_classes.value = subjectData.lastAttendedDay;
+    } else {
+      input_n_classes.value = actual_n_classes;
+      return;
+    }
+  }
+  subjectData.nroClasses = +input_n_classes.value;
+  future_n_classes = +input_n_classes.value;
   let number_left = future_n_classes - actual_n_classes;
 
   // Insertar nuevas columnas
@@ -240,17 +263,17 @@ function addOrRemoveCells(future_n_classes) {
     );
     Array.from(thsToRemove).forEach((th) => th.remove());
     Array.from(tdsToRemove).forEach((td) => td.remove());
-    console.log({number_left,future_n_classes})
+    console.log({ number_left, future_n_classes });
     subjectData.students.forEach((student, i) => {
       student.attendances.splice(future_n_classes);
-      console.log(student)
+      console.log(student);
       calPercentage(student.total, future_n_classes, all_total_td[i]);
     });
-    console.log({subjectData})
+    console.log({ subjectData });
   }
   actual_n_classes = future_n_classes;
   saveInLocalStorage();
-
+  saveHistoryInMemory();
 }
 
 function calPercentage(numerator, denominator, td_total) {
@@ -281,7 +304,7 @@ table.addEventListener("click", (e) => {
     } else if (editSubjectName.trim() === "") {
       alert("No se puede ingresar un valor vacío.");
     } else {
-      console.log(subjectData._id)
+      console.log(subjectData._id);
       select_area.querySelector(
         `option[data-id="${subjectData._id}"]`
       ).textContent = editSubjectName;
@@ -371,7 +394,7 @@ table.addEventListener("click", (e) => {
     const tr = el_clicked.closest("tr");
     tr.classList.add("opacity_1");
     document.querySelector("#th_nro_students").textContent--;
-    nro_students.textContent--
+    nro_students.textContent--;
     const id_student = tr.dataset.id;
     const tr_index = +tr.dataset.index;
     const index = subjectData.students.findIndex(
@@ -394,39 +417,87 @@ table.addEventListener("click", (e) => {
 
   // click to create a new student
   if (el_clicked.id === "create_student_btn") {
-    
     createNewStudent();
   }
   if (el_clicked.id === "import_students") {
+    const li_subject_fragment = document.createDocumentFragment();
+    const import_student_modal = document.querySelector(
+      ".import_student_modal"
+    );
+    import_student_modal.classList.toggle("hidden");
+    console.log(import_student_modal);
+
+    data.subjects
+      .map((objSubject) => ({ name: objSubject.name, _id: objSubject._id }))
+      .forEach((subject) => {
+        if (subject._id != subjectData._id) {
+          const li = document.createElement("li");
+          li.dataset.id = subject._id;
+          li.textContent = subject.name;
+          li.classList.add("import_li");
+          li_subject_fragment.append(li);
+        }
+      });
+    document
+      .querySelector(".import_student_modal ul")
+      .append(li_subject_fragment);
+  }
+
+
+  if (el_clicked.classList.contains("import_li")) {
+    const arrStudents = data.subjects.find(subject => subject._id == el_clicked.dataset.id).students
+    console.log({arrStudents})
+    createNewStudent(true, arrStudents);
+
+    document.querySelector(".import_student_modal").classList.add("hidden");
+  }
+
+  if (el_clicked.id == "addClass") {
+    input_n_classes.value++;
+    addOrRemoveCells(+input_n_classes.value);
+  }
+  if (el_clicked.id == "removeClass") {
+    // input_n_classes.value--
+    addOrRemoveCells(--input_n_classes.value);
   }
 });
 
-function createNewStudent() {
-  const newNroStudent = ++document.querySelector("#th_nro_students")
-    .textContent;
-    nro_students.textContent++
-  const clone_tr = template_tr.cloneNode(true);
-  subjectData.lastIdStudent += 1;
-  clone_tr.querySelector("tr").dataset.id = subjectData.lastIdStudent;
-  clone_tr.querySelector("tr").dataset.index = newNroStudent - 1;
-  clone_tr.querySelector(".each_student_number").textContent = newNroStudent;
-  let fragment_td = document.createDocumentFragment();
+function createNewStudent(isImport= false, newStudents= [{name: ""}]) {
+  const fragment_tr = document.createDocumentFragment()
+  
+  newStudents.forEach(newStudent => {
+    const newNroStudent = ++document.querySelector("#th_nro_students")
+      .textContent;
+    nro_students.textContent++;
+    console.log(newStudent.name)
+    const clone_tr = template_tr.cloneNode(true);
 
-  for (let i = 0; i < actual_n_classes; i++) {
-    template_td.querySelector(".each_cell").dataset.col = i;
+    subjectData.lastIdStudent += 1;
+    clone_tr.querySelector("tr").dataset.id = subjectData.lastIdStudent;
+    clone_tr.querySelector("tr").dataset.index = newNroStudent - 1;
+    clone_tr.querySelector(".each_student_number").textContent = newNroStudent;
+    clone_tr.querySelector(".student_name_input").value = newStudent.name
+    let fragment_td = document.createDocumentFragment();
+  
+    for (let i = 0; i < actual_n_classes; i++) {
+      template_td.querySelector(".each_cell").dataset.col = i;
+  
+      const clone_td = template_td.cloneNode(true);
+      fragment_td.appendChild(clone_td);
+    }
+  
+    clone_tr.querySelector(`.each_total`).before(fragment_td);
+    subjectData.students.push({
+      _id: subjectData.lastIdStudent,
+      name: newStudent.name,
+      attendances: new Array(actual_n_classes).fill(0),
+      total: 0,
+    });
+    fragment_tr.append(clone_tr)
+  })
 
-    const clone_td = template_td.cloneNode(true);
-    fragment_td.appendChild(clone_td);
-  }
+  tbody.appendChild(fragment_tr);
 
-  clone_tr.querySelector(`.each_total`).before(fragment_td);
-  tbody.appendChild(clone_tr);
-  subjectData.students.push({
-    _id: subjectData.lastIdStudent,
-    name: "",
-    attendances: new Array(actual_n_classes).fill(0),
-    total: 0,
-  });
   tbody
     .querySelector(
       `tr[data-id="${subjectData.lastIdStudent}"] .student_name_input`
@@ -493,30 +564,7 @@ table.addEventListener("change", (e) => {
 
   // change the number of clases /days (columns)
   if (el_changed.id === "input_n_classes") {
-    if (input_n_classes.value > 100) {
-      window.alert("El valor no puede ser mayor a 100");
-      input_n_classes.value = actual_n_classes;
-      return;
-    }
-    if (input_n_classes.value < subjectData.lastAttendedDay) {
-      // window.alert("El valor no puede ser mayor a 100");
-      if (
-        window.confirm(`No puede eliminar la columna del dia ${
-          subjectData.lastAttendedDay
-        } porque hay estudiantes registrados asistentes ese dia.
-       Se eliminará hasta la columna ${
-         subjectData.lastAttendedDay + 1
-       } en su lugar. ¿Está de acuerdo?`)
-      ) {
-        input_n_classes.value = subjectData.lastAttendedDay;
-      } else {
-        input_n_classes.value = actual_n_classes;
-        return;
-      }
-    }
-    subjectData.nroClasses = +el_changed.value;
     addOrRemoveCells(+input_n_classes.value);
-    saveHistoryInMemory();
     // all_cells = [...document.getElementsByClassName("each_cell")];
     // getData();
   }
@@ -606,8 +654,6 @@ table.addEventListener("change", (e) => {
       // console.log({ subjectData });
     }
   }
-
-  
 });
 
 const debounceEditStudentName = debounce((value, id_student) => {
@@ -653,7 +699,6 @@ function saveHistoryInMemory() {
 
 let all_asist_data = [];
 
-
 // remove or add class of style whether the total is less or more than 75
 function classDependsTotal(total, i) {
   if (total >= 75) {
@@ -691,14 +736,13 @@ document.addEventListener("keydown", (e) => {
   }
   if (e.key === "Enter") {
     // console.log(e.target)
-    if (e.target.classList.contains('student_name_input')) {
-
+    if (e.target.classList.contains("student_name_input")) {
       const tr = e.target.closest("tr");
       const tr_index = +tr.dataset.index;
       if (tr_index + 1 == nro_students.textContent) {
         createNewStudent();
       }
-    } 
+    }
     // Realizar la acción deseada aquí, por ejemplo, llamar a una función
     // handleEnterKey();
   }
@@ -709,8 +753,10 @@ function goBack() {
     now--;
     printData(history[now], false, now + 1);
     subjectData = JSON.parse(JSON.stringify(history[now]));
-    const indexSubject = data.subjects.findIndex(subject => subject._id == subjectData._id)
-    data.subjects[indexSubject] = subjectData
+    const indexSubject = data.subjects.findIndex(
+      (subject) => subject._id == subjectData._id
+    );
+    data.subjects[indexSubject] = subjectData;
     saveInLocalStorage();
   }
   if (now == 0) {
@@ -722,14 +768,15 @@ function goNext() {
   now++;
   printData(history[now], false, now);
   subjectData = JSON.parse(JSON.stringify(history[now]));
-  const indexSubject = data.subjects.findIndex(subject => subject._id == subjectData._id)
-  data.subjects[indexSubject] = subjectData
+  const indexSubject = data.subjects.findIndex(
+    (subject) => subject._id == subjectData._id
+  );
+  data.subjects[indexSubject] = subjectData;
   saveInLocalStorage();
   if (now == history.length - 1) {
     future.classList.add("disabled");
   }
 }
-
 
 function saveInLocalStorage() {
   localStorage.setItem("data", JSON.stringify(data));
