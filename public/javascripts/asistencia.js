@@ -440,7 +440,7 @@ table.addEventListener("click", (e) => {
       });
     document
       .querySelector(".import_student_modal ul")
-      .append(li_subject_fragment);
+      .innerHTML = li_subject_fragment;
   }
 
 
