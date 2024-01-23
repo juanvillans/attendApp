@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attend App</title>
+    <link rel="stylesheet" href="stylesheets/style_formularios.css">
+
+</head>
+<body>
+    <script src="javascripts/formularios-dinamicos.js"></script>
+    <div class="container-form">
+        <div class="container-side-img">
+            <img class="side-img" src="img/banner1.png" alt="">
+        </div>
+        <div class="form-information">
+            <div class="form-information-childs">
+                <div class="container-logo-img">
+                    <img class="logo-img" src="img/Attend-app512x512.png" alt="">
+                </div>
+                <div class="animation">
+                    <button class="btn" id="btn-inicia-sesion" onclick="showLogin()">Inicia sesion<button>
+                    <button class="btn" id="btn-registrate" onclick="showRegister()">Registrate</button>
+                </div>
+                <form class="form-inputs-sesion" id="form-inputs-sesion">
+                    <label>
+                        <p>Correo electronico</p>
+                        <input type="email">
+                    </label>
+                    <label>
+                        <p>Contraseña</p>
+                        <input type="password">
+                    </label>
+                    <div class="container-btn-continue">
+                        <a href="inicio_sesion.html"><input class="btn-continue" type="submit" value="Continuar"></a> 
+                     </div>
+                </form>
+                <form class="form-inputs-register" id="form-inputs-register">
+                    <label>
+                        <p>Nombre</p>
+                        <input type="text">
+                    </label>
+                    <label>
+                        <p>Apellido</p>
+                        <input type="text">
+                    </label>
+                    <label>
+                        <p>Correo electronico</p>
+                        <input type="email">
+                    </label>
+                    <label>
+                        <p>Contraseña</p>
+                        <input type="password">
+                    </label>
+                    <div class="container-btn-continue">
+                        <a href="inicio_sesion.html"><input class="btn-continue" type="submit" value="Continuar"></a> 
+                     </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
