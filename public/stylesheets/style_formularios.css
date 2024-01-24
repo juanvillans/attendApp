@@ -42,10 +42,11 @@
     width: 100%;
     margin: 8vh;
     display: flex;
-    align-items: center;
+    /* align-items: center; */
     justify-content: center;
 
 }
+
 .container-logo-img{
     display: flex;
     align-items: center;
@@ -62,15 +63,26 @@
     font-size: 14px;
 }
 .animation{
-    width: 250px;
+    width: 259px;
     display: flex;
     justify-content: space-between;
     margin-bottom: 20px;
 }
-.btn{
+.form-information .btn:hover {
+    cursor: pointer;
+    color: black;
+    
+}
+.form-information .btn.active {
+    border-bottom: 3px solid #24e5c1;
+    color: black;
+}
+.form-information .btn{
     background-color: white;
     border: none;
-    font-size: 20px;
+    color: grey;
+    font-size: 18px;
+    margin-bottom: 14px;
 }
 label p{
     margin-bottom: 5px;
@@ -79,7 +91,7 @@ label input{
     margin-bottom: 15px;
     width: 100%;
     height: 30px;
-    padding: 5px;
+    padding: 20px;
     border: 2px solid #E9E9E9;
     border-radius: 8px;
 }

@@ -1,13 +1,19 @@
 
 const login_form = document.getElementById("form-inputs-sesion");
 const register_form = document.getElementById("form-inputs-register");
+const btn_inicio = document.querySelector('#btn-inicia-sesion');
+const btn_registrate = document.querySelector('#btn-registrate');
 
 function showRegister() {
+  btn_inicio.classList.remove("active")
+  btn_registrate.classList.add("active")
   login_form.style.display = "none";
   register_form.style.display = "block";
 }
 
 function showLogin() {
+  btn_inicio.classList.add("active")
+  btn_registrate.classList.remove("active")
   register_form.style.display = "none";
   login_form.style.display = "block";
 }
