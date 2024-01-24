@@ -2,8 +2,11 @@ const cacheName = 'attendApp-cache';
 const precacheResources = [
   '/',
   '/asistencia.html',
+  '/formularios.html',
   '/stylesheets/asistencia.css',
-  '/javascripts/asistencia.js'
+  '/stylesheets/style_formularios.css',
+  '/javascripts/asistencia.js',
+  '/javascripts/formularios-dinamicos.js',
 ];
 
 self.addEventListener('install', (event) => {
