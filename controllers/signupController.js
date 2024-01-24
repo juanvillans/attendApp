@@ -26,16 +26,24 @@ const signupController = async (req, res) => {
         name,
         email,
         psw: hashedPassword, // Guarda el hash en lugar de la contraseña original
-        subjects: [{ _id: newId, name: "materia 1", nroClasses: 24, lastIdStudent: 0, students: []}],
+        subjects: [
+          {
+            _id: newId,
+            name: "materia 1",
+            nroClasses: 24,
+            lastIdStudent: 0,
+            students: [],
+            lastAttendedDay: 0,
+
+          },
+        ],
       });
       await user.save();
 
-      return res
-        .status(200)
-        .json({
-          success: true,
-          message: "Registro exitoso",
-        });
+      return res.status(200).json({
+        success: true,
+        message: "Registro exitoso",
+      });
     }
   } catch (error) {
     // Manejo de errores
