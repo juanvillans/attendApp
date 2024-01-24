@@ -572,17 +572,6 @@ table.addEventListener("change", (e) => {
     // getData();
   }
 
-  // fill all the row of an student
-  // if (el_changed.classList.contains("marcar_fila_input")) {
-  //   let n_row = el_changed.id - 1;
-  //   let actual_row = [...all_students_row[n_row].children];
-  //   if (el_changed.checked) {
-  //     actual_row.forEach((e) => e.classList.add("attended"));
-  //   } else {
-  //     actual_row.forEach((e) => e.classList.remove("attended"));
-  //   }
-  //   getData();
-  // }
 
   // fill al the column of a class / day
   if (el_changed.classList.contains("marcar_col_input")) {
@@ -618,16 +607,23 @@ table.addEventListener("change", (e) => {
         cells_of_column.forEach((cell, i) => {
           cell.classList.add("attended");
           let student = subjectData.students[i];
+          if (student.attendances[nroCol] == 0 ) {
+            student.total++;
+          }
           student.attendances[nroCol] = 1;
-          student.total++;
           calPercentage(student.total, actual_n_classes, all_total_td[i]);
         });
       } else {
+        
         cells_of_column.forEach((cell, i) => {
+
           cell.classList.remove("attended");
           let student = subjectData.students[i];
+          if (student.attendances[nroCol] == 1) {
+            student.total--;
+
+          }
           student.attendances[nroCol] = 0;
-          student.total--;
           calPercentage(student.total, actual_n_classes, all_total_td[i]);
         });
         if (nroCol + 1 == subjectData.lastAttendedDay) {
