@@ -32,7 +32,12 @@ const signupController = async (req, res) => {
             name: "materia 1",
             nroClasses: 24,
             lastIdStudent: 0,
-            students: [],
+            students: [{
+              _id: 1,
+              name: "Primer Estudiante",
+              total: 0,
+              attendances: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+            }],
             lastAttendedDay: 0,
 
           },

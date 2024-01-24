@@ -83,7 +83,8 @@ register_form.onsubmit = (e) => {
             register_form.style.display = "none";
             login_form.style.display = "block";
             alert(data.message)
-
+            btn_inicio.classList.add("active")
+            btn_registrate.classList.remove("active")
           } else {
             alert(data.message)
   
