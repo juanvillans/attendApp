@@ -1,5 +1,5 @@
 require("dotenv").config();
-const usersRouter = require("./routes/users");
+const usersRouter = require("./routes/routes");
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
@@ -23,17 +23,6 @@ db.on("error", (error) => console.error(error));
 db.once("open", () => {
   console.log("Connected to the database");
 
-  // Retrieve the list of collections
-  db.db.listCollections().toArray()
-    .then((collections) => {
-      // Print the names of the collections
-      collections.forEach(function (collection) {
-        console.log(collection.name);
-      });
-    })
-    .catch((error) => {
-      console.error('Error retrieving collections:', error);
-    });
 });
 
 

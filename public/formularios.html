@@ -8,7 +8,6 @@
 
 </head>
 <body>
-    <script src="javascripts/formularios-dinamicos.js"></script>
     <div class="container-form">
         <div class="container-side-img">
             <img class="side-img" src="img/banner1.png" alt="">
@@ -22,42 +21,44 @@
                     <button class="btn" id="btn-inicia-sesion" onclick="showLogin()">Inicia sesion<button>
                     <button class="btn" id="btn-registrate" onclick="showRegister()">Registrate</button>
                 </div>
-                <form class="form-inputs-sesion" id="form-inputs-sesion">
+                <form  class="form-inputs-sesion" id="form-inputs-sesion">
                     <label>
                         <p>Correo electronico</p>
-                        <input type="email">
+                        <input name="email" type="email">
                     </label>
                     <label>
                         <p>Contraseña</p>
-                        <input type="password">
+                        <input name="psw" type="password">
                     </label>
                     <div class="container-btn-continue">
-                        <a href="inicio_sesion.html"><input class="btn-continue" type="submit" value="Continuar"></a> 
+                        <input class="btn-continue" type="submit" value="Iniciar">
                      </div>
                 </form>
-                <form class="form-inputs-register" id="form-inputs-register">
+                <form action="/signup" method="post" class="form-inputs-register" id="form-inputs-register">
                     <label>
                         <p>Nombre</p>
-                        <input type="text">
+                        <input name="name" type="text"  required>
                     </label>
                     <label>
                         <p>Apellido</p>
-                        <input type="text">
+                        <input name="lastName" type="text" required>
                     </label>
                     <label>
                         <p>Correo electronico</p>
-                        <input type="email">
+                        <input name="email" type="email" required>
                     </label>
                     <label>
                         <p>Contraseña</p>
-                        <input type="password">
+                        <input name="psw" type="password" minlength="6" required>
                     </label>
                     <div class="container-btn-continue">
-                        <a href="inicio_sesion.html"><input class="btn-continue" type="submit" value="Continuar"></a> 
+                        <input class="btn-continue" type="submit" value="Registrarme">
                      </div>
                 </form>
             </div>
         </div>
     </div>
+    <script src="javascripts/formularios-dinamicos.js"></script>
+
 </body>
 </html>

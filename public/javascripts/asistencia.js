@@ -460,6 +460,9 @@ table.addEventListener("click", (e) => {
     // input_n_classes.value--
     addOrRemoveCells(--input_n_classes.value);
   }
+  // if (el_clicked.id == "newSubjectBtn") {
+    
+  // }
 });
 
 function createNewStudent(isImport= false, newStudents= [{name: ""}]) {

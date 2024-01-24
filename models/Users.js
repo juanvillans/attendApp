@@ -9,6 +9,7 @@ const studentsSchema = new mongoose.Schema([
         name:{
             type: String,
             required: true,
+            unique: true,
         },
         attendances: [Number],
         total: {
