@@ -4,6 +4,7 @@ const path = require("path");
 const Users = require("../models/Users");
 const signupController = require('../controllers/signupController');
 const loginController = require('../controllers/loginController');
+const syncDataController = require("../controllers/syncDataController")
 
 router.get("/", async (req, res) => {
   try {
@@ -32,8 +33,11 @@ router.get("/home", async (req, res) => {
 });
 
 
+
 router.post('/signup', signupController);
 router.post('/login', loginController);
+
+router.put('/upload/:objectId', syncDataController);
 
 
 module.exports = router;

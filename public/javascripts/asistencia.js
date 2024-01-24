@@ -1,5 +1,8 @@
 const table_container = document.querySelector(".table_container");
 const thead = document.querySelector("thead tr");
+const upload_cloud = document.querySelector('.upload_cloud');
+const success_cloud = document.querySelector('.success_cloud');
+
 const input_n_classes = document.getElementById("input_n_classes");
 const th_total = document.querySelector(".th_total");
 let nro_students = "";
@@ -44,33 +47,41 @@ const debounce = (fn, delay) => {
 const template_option = document.querySelector("#template_option").content;
 const fetchData = async () => {
   data = localStorage.getItem("data");
+  let isSync = localStorage.getItem("isSync");
+  if (isSync == "false") {
+    upload_cloud.classList.remove("hidden")
+    success_cloud.classList.add("hidden")
+  }
+
   if (data) {
     data = JSON.parse(data);
-    console.log("los tados existen en el localstorage", data);
     printOptionsAndSettleDown();
   } else {
-    try {
-      const response = await fetch(
-        `https://attend-app-rho.vercel.app/asistencias/jeje`
-      );
+    // window.location.href = "/home";
 
-      // Verificar el estado de la respuesta///
-      if (response.ok) {
-        data = await response.json();
-        console.log("Datos de la API:", data);
+    // try {
+    //   const response = await fetch(
+    //     `https://attend-app-rho.vercel.app/asistencias/jeje`
+    //   );
 
-        if (data != null) {
-          printOptionsAndSettleDown();
-          localStorage.setItem("data", JSON.stringify(data));
-        }
-      } else {
-        console.error("Error en la solicitud:", response.status);
-      }
-    } catch (error) {
-      console.error("Error en la solicitud:", error);
-    }
+    //   // Verificar el estado de la respuesta///
+    //   if (response.ok) {
+    //     data = await response.json();
+    //     console.log("Datos de la API:", data);
+
+    //     if (data != null) {
+    //       printOptionsAndSettleDown();
+    //       localStorage.setItem("data", JSON.stringify(data));
+    //     }
+    //   } else {
+    //     console.error("Error en la solicitud:", response.status);
+    //   }
+    // } catch (error) {
+    //   console.error("Error en la solicitud:", error);
+    // }
   }
   function printOptionsAndSettleDown() {
+    document.getElementById("userName").textContent = data.name;
     const fragment_option = document.createDocumentFragment();
     data.subjects
       .map((objSubject) => ({ name: objSubject.name, _id: objSubject._id }))
@@ -190,7 +201,6 @@ function printData(arraySelectedSubject, isFirstTime = false, scrollIndex) {
 }
 
 function addOrRemoveCells(future_n_classes) {
-
   if (input_n_classes.value > 100) {
     window.alert("El valor no puede ser mayor a 100");
     input_n_classes.value = actual_n_classes;
@@ -295,8 +305,22 @@ function calPercentage(numerator, denominator, td_total) {
 }
 
 let areYouSureThatDayAlert = true;
-table.addEventListener("click", (e) => {
+document.addEventListener("click", (e) => {
+
   const el_clicked = e.target;
+
+  if (el_clicked == upload_cloud || el_clicked.classList.contains("svg_upload")) {
+    if (navigator.onLine) {
+      console.log(navigator.onLine)
+      document.querySelector("#loading").classList.remove("hidden")
+      sync()
+      document.querySelector("#loading").classList.add("hidden")
+
+    } else {
+      alert("Conectese a Internet para subir los cambios a la nube")
+      console.log("sincronizado")
+    }
+  }
   if (el_clicked.classList.contains("edit_subject_button")) {
     let editSubjectName = prompt("Nombre de la materia", subjectData.name);
 
@@ -443,15 +467,19 @@ table.addEventListener("click", (e) => {
       .replaceChildren(li_subject_fragment);
   }
 
-
   if (el_clicked.classList.contains("import_li")) {
-    const arrStudents = data.subjects.find(subject => subject._id == el_clicked.dataset.id).students
-    console.log({arrStudents})
+    const arrStudents = data.subjects.find(
+      (subject) => subject._id == el_clicked.dataset.id
+    ).students;
+    console.log({ arrStudents });
     createNewStudent(true, arrStudents);
 
     document.querySelector(".import_student_modal").classList.add("hidden");
   }
-
+  if (el_clicked.id === "logOut") {
+    localStorage.removeItem("data");
+    window.location.href = "/home";
+  }
   if (el_clicked.id == "addClass") {
     input_n_classes.value++;
     addOrRemoveCells(+input_n_classes.value);
@@ -461,34 +489,34 @@ table.addEventListener("click", (e) => {
     addOrRemoveCells(--input_n_classes.value);
   }
   // if (el_clicked.id == "newSubjectBtn") {
-    
+
   // }
 });
 
-function createNewStudent(isImport= false, newStudents= [{name: ""}]) {
-  const fragment_tr = document.createDocumentFragment()
-  
-  newStudents.forEach(newStudent => {
+function createNewStudent(isImport = false, newStudents = [{ name: "" }]) {
+  const fragment_tr = document.createDocumentFragment();
+
+  newStudents.forEach((newStudent) => {
     const newNroStudent = ++document.querySelector("#th_nro_students")
       .textContent;
     nro_students.textContent++;
-    console.log(newStudent.name)
+    console.log(newStudent.name);
     const clone_tr = template_tr.cloneNode(true);
 
     subjectData.lastIdStudent += 1;
     clone_tr.querySelector("tr").dataset.id = subjectData.lastIdStudent;
     clone_tr.querySelector("tr").dataset.index = newNroStudent - 1;
     clone_tr.querySelector(".each_student_number").textContent = newNroStudent;
-    clone_tr.querySelector(".student_name_input").value = newStudent.name
+    clone_tr.querySelector(".student_name_input").value = newStudent.name;
     let fragment_td = document.createDocumentFragment();
-  
+
     for (let i = 0; i < actual_n_classes; i++) {
       template_td.querySelector(".each_cell").dataset.col = i;
-  
+
       const clone_td = template_td.cloneNode(true);
       fragment_td.appendChild(clone_td);
     }
-  
+
     clone_tr.querySelector(`.each_total`).before(fragment_td);
     subjectData.students.push({
       _id: subjectData.lastIdStudent,
@@ -496,8 +524,8 @@ function createNewStudent(isImport= false, newStudents= [{name: ""}]) {
       attendances: new Array(actual_n_classes).fill(0),
       total: 0,
     });
-    fragment_tr.append(clone_tr)
-  })
+    fragment_tr.append(clone_tr);
+  });
 
   tbody.appendChild(fragment_tr);
 
@@ -572,7 +600,6 @@ table.addEventListener("change", (e) => {
     // getData();
   }
 
-
   // fill al the column of a class / day
   if (el_changed.classList.contains("marcar_col_input")) {
     let nroCol = +el_changed.dataset.col;
@@ -607,21 +634,18 @@ table.addEventListener("change", (e) => {
         cells_of_column.forEach((cell, i) => {
           cell.classList.add("attended");
           let student = subjectData.students[i];
-          if (student.attendances[nroCol] == 0 ) {
+          if (student.attendances[nroCol] == 0) {
             student.total++;
           }
           student.attendances[nroCol] = 1;
           calPercentage(student.total, actual_n_classes, all_total_td[i]);
         });
       } else {
-        
         cells_of_column.forEach((cell, i) => {
-
           cell.classList.remove("attended");
           let student = subjectData.students[i];
           if (student.attendances[nroCol] == 1) {
             student.total--;
-
           }
           student.attendances[nroCol] = 0;
           calPercentage(student.total, actual_n_classes, all_total_td[i]);
@@ -779,4 +803,35 @@ function goNext() {
 
 function saveInLocalStorage() {
   localStorage.setItem("data", JSON.stringify(data));
+  localStorage.setItem("isSync", false);
+  upload_cloud.classList.remove("hidden")
+  success_cloud.classList.add("hidden")
+}
+
+function sync(id = data._id) {
+  fetch(`/upload/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  })
+    .then(response => response.json())
+    .then(data => {
+      // Manejar la respuesta del servidor
+      console.log(data)
+      if (data.success) {
+        localStorage.setItem("isSync", true)
+        upload_cloud.classList.add("hidden")
+        success_cloud.classList.remove("hidden")
+
+      } else {
+        alert(data.message)
+
+      }
+    })
+    .catch(error => {
+      // Manejar errores de la petición
+      console.error(error);
+    });
 }

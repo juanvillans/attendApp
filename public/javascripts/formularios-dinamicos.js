@@ -1,3 +1,4 @@
+
 const login_form = document.getElementById("form-inputs-sesion");
 const register_form = document.getElementById("form-inputs-register");
 
@@ -31,6 +32,7 @@ login_form.onsubmit = (e) => {
         // Manejar la respuesta del servidor
         if (data.success) {
           
+          localStorage.setItem("isSync", true);
           localStorage.setItem("data", data.data)
           window.location.href = "/";
         } else {
@@ -54,8 +56,7 @@ register_form.onsubmit = (e) => {
     const email = register_form.querySelector("input[name='email']").value;
     const psw = register_form.querySelector("input[name='psw']").value;
     const name = register_form.querySelector("input[name='name']").value;
-    const lastName = register_form.querySelector("input[name='lastName']").value;
-    let registerData = { email, psw, name, lastName };
+    let registerData = { email, psw, name };
 
    
 
@@ -84,7 +85,7 @@ register_form.onsubmit = (e) => {
         })
         .catch((error) => {
           // Manejar errores de la solicitud
-          console.error(error);
+          alert(error.error);
         });
     };
     registerRequest()

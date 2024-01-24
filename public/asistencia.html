@@ -13,15 +13,36 @@
   </head>
 
   <body>
+    <script>
+      const data = localStorage.getItem("data");
+      if (!data) {
+          window.location.href = "/home"
+      }
+    </script>
+    <!-- Content Wrapper. Contains page content -->
+    
+    <!-- Content Header (Page header) -->
+    <!-- <header class="content-header">
+      
+    </header> -->
+    <header>
+      <img class="logo-img" src="img/Attend-app512x512.png" alt="">
+      <div class="icons_buttons">
+        <svg class="success_cloud" xmlns="http://www.w3.org/2000/svg" width="48" height="48" id="cloud"><path fill="none" d="M0 0h48v48H0z"></path><path fill="#888888" d="M38.71 20.07C37.35 13.19 31.28 8 24 8c-5.78 0-10.79 3.28-13.3 8.07C4.69 16.72 0 21.81 0 28c0 6.63 5.37 12 12 12h26c5.52 0 10-4.48 10-10 0-5.28-4.11-9.56-9.29-9.93zM20 34l-7-7 2.83-2.83L20 28.34l10.35-10.35 2.83 2.83L20 34z"></path></svg>
+        <svg class="upload_cloud hidden" title="Subir cambios a la nube" hidden" xmlns="http://www.w3.org/2000/svg" width="48" height="48" id="cloud"><path class="svg_upload" fill="none" d="M0 0h48v48H0z"></path><path class="svg_upload" d="M38.71 20.07C37.35 13.19 31.28 8 24 8c-5.78 0-10.79 3.28-13.3 8.07C4.69 16.72 0 21.81 0 28c0 6.63 5.37 12 12 12h26c5.52 0 10-4.48 10-10 0-5.28-4.11-9.56-9.29-9.93zM28 26v8h-8v-8h-6l10-10 10 10h-6z"></path></svg>
+        <span class="hidden" id="loading">Cargando...</span>
+        <span class="userBtn" id="userBtn">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" id="user" class="userBtn"><path fill="#000" d="M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm0 2a9.985 9.985 0 0 0-8 4 9.985 9.985 0 0 0 8 4 9.985 9.985 0 0 0 8-4 9.985 9.985 0 0 0-8-4z" class="userBtn"></path></svg>
+          <div class="user_modal">
+            <p id="userName"></p>
+            <button id="logOut">Cerrar sesión</button>
+          </div>
+        </span>
+      </div>
+    </header>
+    <!-- Main content -->
     <div class="container">
-      <!-- Content Wrapper. Contains page content -->
-
-      <!-- Content Header (Page header) -->
-      <!-- <header class="content-header">
-         
-        </header> -->
-
-      <!-- Main content -->
       <main>
         <div class="content table_container">
           <div class="intro_table">

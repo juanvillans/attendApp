@@ -1,33 +1,43 @@
 const cacheName = 'attendApp-cache';
-
-// Archivos a almacenar en caché
 const precacheResources = [
   '/',
   '/asistencia.html',
-  '/stylesheets/asistencia.min.css',
-//   '/app.js',
-  '/javascripts/asistencia.min.js'
+  '/stylesheets/asistencia.css',
+  '/javascripts/asistencia.js'
 ];
 
-// Instalación del Service Worker
 self.addEventListener('install', (event) => {
   console.log('Service worker install event!');
-  event.waitUntil(caches.open(cacheName).then((cache) => cache.addAll(precacheResources)));
+  event.waitUntil(
+    caches.open(cacheName)
+      .then((cache) => cache.addAll(precacheResources))
+      .then(() => self.skipWaiting())
+  );
 });
 
 self.addEventListener('activate', (event) => {
   console.log('Service worker activate event!');
+  event.waitUntil(
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames.filter((name) => name !== cacheName)
+          .map((name) => caches.delete(name))
+      );
+    })
+  );
 });
 
-// When there's an incoming fetch request, try and respond with a precached resource, otherwise fall back to the network
 self.addEventListener('fetch', (event) => {
   console.log('Fetch intercepted for:', event.request.url);
   event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      if (cachedResponse) {
-        return cachedResponse;
-      }
-      return fetch(event.request);
-    }),
+    fetch(event.request).then((networkResponse) => {
+      const clonedResponse = networkResponse.clone();
+      caches.open(cacheName).then((cache) => {
+        cache.put(event.request, clonedResponse);
+      });
+      return networkResponse;
+    }).catch(() => {
+      return caches.match(event.request);
+    })
   );
 });

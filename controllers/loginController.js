@@ -1,7 +1,5 @@
-const express = require("express");
 const bcrypt = require("bcryptjs");
 const Users = require("../models/Users");
-const path = require("path");
 
 const loginController = async (req, res) => {
   try {

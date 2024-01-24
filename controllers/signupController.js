@@ -1,4 +1,3 @@
-const express = require("express");
 const bcrypt = require("bcryptjs"); // Importa la biblioteca bcryptjs
 const Users = require("../models/Users");
 function uuidv4() {
@@ -11,7 +10,7 @@ function uuidv4() {
 
 const signupController = async (req, res) => {
   try {
-    const { name, lastName, email, psw } = req.body;
+    const { name, email, psw } = req.body;
 
     const existUser = await Users.findOne({ email });
 
@@ -25,7 +24,6 @@ const signupController = async (req, res) => {
       const newId = uuidv4();
       const user = await Users.create({
         name,
-        lastName,
         email,
         psw: hashedPassword, // Guarda el hash en lugar de la contraseña original
         subjects: [{ _id: newId, name: "materia 1", nroClasses: 24, lastIdStudent: 0, students: []}],

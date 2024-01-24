@@ -8,6 +8,12 @@
 
 </head>
 <body>
+    <script>
+        const data = localStorage.getItem("data");
+        if (data) {
+            window.location.href = "/"
+        }
+    </script>
     <div class="container-form">
         <div class="container-side-img">
             <img class="side-img" src="img/banner1.png" alt="">
@@ -36,13 +42,10 @@
                 </form>
                 <form action="/signup" method="post" class="form-inputs-register" id="form-inputs-register">
                     <label>
-                        <p>Nombre</p>
+                        <p>Nombre y apellido</p>
                         <input name="name" type="text"  required>
                     </label>
-                    <label>
-                        <p>Apellido</p>
-                        <input name="lastName" type="text" required>
-                    </label>
+                    
                     <label>
                         <p>Correo electronico</p>
                         <input name="email" type="email" required>
