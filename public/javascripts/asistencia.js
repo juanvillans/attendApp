@@ -80,27 +80,27 @@ const fetchData = async () => {
     //   console.error("Error en la solicitud:", error);
     // }
   }
-  function printOptionsAndSettleDown() {
-    document.getElementById("userName").textContent = data.name;
-    const fragment_option = document.createDocumentFragment();
-    data.subjects
-      .map((objSubject) => ({ name: objSubject.name, _id: objSubject._id }))
-      .forEach((subject) => {
-        const cloned_option = template_option.cloneNode(true);
-        cloned_option.querySelector("option").value = subject._id;
-        cloned_option.querySelector("option").dataset.id = subject._id;
-        cloned_option.querySelector("option").textContent = subject.name;
-        fragment_option.appendChild(cloned_option);
-      });
-    select_area.append(fragment_option);
-    subjectData = data.subjects[0];
-    selectedSubjectID = subjectData._id;
-
-    select_area.value = selectedSubjectID;
-    printData(subjectData, true);
-    saveHistoryInMemory();
-  }
 };
+function printOptionsAndSettleDown() {
+  document.getElementById("userName").textContent = data.name;
+  const fragment_option = document.createDocumentFragment();
+  data.subjects
+    .map((objSubject) => ({ name: objSubject.name, _id: objSubject._id }))
+    .forEach((subject) => {
+      const cloned_option = template_option.cloneNode(true);
+      cloned_option.querySelector("option").value = subject._id;
+      cloned_option.querySelector("option").dataset.id = subject._id;
+      cloned_option.querySelector("option").textContent = subject.name;
+      fragment_option.appendChild(cloned_option);
+    });
+  select_area.append(fragment_option);
+  subjectData = data.subjects[0];
+  selectedSubjectID = subjectData._id;
+
+  select_area.value = selectedSubjectID;
+  printData(subjectData, true);
+  saveHistoryInMemory();
+}
 // Llamar a la función para obtener los datos de la API
 fetchData();
 
@@ -321,6 +321,41 @@ document.addEventListener("click", (e) => {
       console.log("sincronizado")
     }
   }
+
+  if (el_clicked.classList.contains("delete_subject_button")) {
+    if (
+      window.confirm(
+        `¿Está seguro de eliminar esta materia? Se perderá para siempre`
+      )
+    ) {
+      if (data.subjects.length > 1) {
+        console.log("Eliminar y mandarlo a otra area existente")
+        data.subjects = data.subjects.filter(
+          (subject) => subject._id !==  select_area.value
+        );
+        console.log({data})
+        subjectData = data.subjects[0]
+        document.querySelector(`option[data-id="${select_area.value}"]`).remove()
+        select_area.value = subjectData._id
+        console.log(subjectData._id)
+        printData(subjectData, true);
+        history = [];
+        now = 0;
+        future.classList.add("disabled");
+        past.classList.add("disabled");
+        saveInLocalStorage();
+
+        // printOptionsAndSettleDown()
+        
+      } else {
+        alert("no puede quedarse sin ninguna meteria")
+
+      }
+    } else {
+      return; // No se ejecuta el resto del código
+    }
+  }
+
   if (el_clicked.classList.contains("edit_subject_button")) {
     let editSubjectName = prompt("Nombre de la materia", subjectData.name);
 
@@ -558,7 +593,12 @@ table.addEventListener("change", (e) => {
         const newSubject = {
           _id: newId,
           name: newObjectText,
-          students: [],
+          students: [{
+            _id: 1,
+            name: "Primer Estudiante",
+            total: 0,
+            attendances: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+          }],
           nroClasses: 24,
           lastIdStudent: 0,
           lastAttendedDay: 0,
@@ -764,6 +804,12 @@ document.addEventListener("keydown", (e) => {
       const tr_index = +tr.dataset.index;
       if (tr_index + 1 == nro_students.textContent) {
         createNewStudent();
+      } else {
+        const nextInput = tr.nextElementSibling 
+        if (nextInput) {
+          console.log(nextInput)
+          nextInput.querySelector(".student_name_input").focus()
+        }
       }
     }
     // Realizar la acción deseada aquí, por ejemplo, llamar a una función
